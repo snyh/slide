@@ -8,47 +8,45 @@ Tags: golang, deepin, dde, linux
 武汉深之度
 
 
-* Title
+* Linux桌面环境
 
-ok haha
+- Gnome (Gtk)
+- KDE (Qt)
+- Lxde (Gtk) LxQt(Qt5)
+- Xfce (Gtk)
+- DDE (Gtk)
+- .......
 
-** Dnon't do it
+* DE组件
 
+- Windows Manager
+- Input Method
+- Launcher 
+- Panel (dock)
+- Session Manager
+- Appearance
+- Configure Modules
+- many service daemon, like
+  audio, network, volume, power, login
+- Basic Applications
+  Document Reader、Browser、File Manager
+  
+* DE是否应该努力追求本身独立?
 
-* Title of slide or section (must have asterisk)
+- 可以跑在更多发行版上
+- 更多的受众，更多的反馈
+- 但DE必定与底层服务甚至特定版，这条路很难走到完美。
+- 造成更多的开发包袱
 
-** SubsectionABC
+Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 
-- bullets
-- more bullets
-- a bullet with
+但应该打包更多的系统在一起, 从更多的地方优化用户体验，无折腾。
 
+  基础文件系统 + 仓库 + DE + 软件商店(各种应用软件才是正常用户需要的,基础设施不应该放到用户面前)
 
-* Some More text
+相关实验性项目
 
-Preformatted text
-is indented (however you like)
+  Gnome SDK + sandboxed appliations
+  Deepin XX ?
 
-Further Text, including invocations like:
-
-.code x.go /^func main/,/^}/
-.play y.go
-
-* show image
-
-* Deepin OS
-.iframe http://deepin.org/system.html 768 1024
-
-* Deepin Applications
-.iframe http://deepin.org/soft.html 500 900
-
-* cool
-.link http://deepin.org label
-
-* next ?
-.html file.html
-
-* Dondn't know this
-.caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
-
-Again, more text
+* What's about golang ?
