@@ -49,4 +49,152 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
   Gnome SDK + sandboxed appliations
   Deepin XX ?
 
-* What's about golang ?
+* Why golang?
+
+- 简洁一致
+- 开发效率与运行效率间的平衡
+- 编译型语言相对来说更适合长期项目
+
+
+
+
+
+
+
+* 遇到的问题
+
+- 与其他组件的融合
+- X11
+
+
+
+
+
+
+* 解决方式
+
+- using Cgo to get anything
+- Pure golang library
+
+
+
+* Cgo Tips 
+- Go-C 
+- C-Go
+- array
+- struct
+
+* Cgo Tips: Go call C functions && types convert
+
+.play cgo.go
+
+Easy to use. Just using the *C* pseudo package.
+
+The code of glue-C is far less than perl、python ...
+
+* Cgo Tips: Even more convenient than C at make time
+
+.play cgo_directive.go
+
+
+* Cgo Tips: Struct is also easy to use
+
+.play cgo_struct.go
+
+* Cgo Tips: But struct of array is annoying
+
+.play cgo_array.go
+
+* Cgo Tips: But struct of array is annoying
+
+convert *****struct_tm* to ***[size]**C.struct_tm*
+
+.play cgo_array_ok.go /func main/,/^}/
+
+Why we choose *4* as the *array* *length*
+
+
+* Cgo Tips: But struct of array is annoying
+
+In practice, the array length must be given at compile time.
+
+we can simply use a larger one, like 
+
+    tms := (*[1<<12](*C.struct_tm))(unsafe.Pointer(C.tms))
+
+Sadly, we are torn between "memory save" and "safety".
+
+The solution
+
+- cache manager, dynamicly choose different arrays
+- write helper function in C
+- ?
+
+make choice by how many types like this you have to face.
+
+
+* Cgo Problems: We have more troubles
+
+- GC
+  C.free(unsafe.Pointer(foo)) // malloc and free
+
+  foo.Ref() and foo.Unref() // C library reference system
+
+ease the pain
+
+  runtime.SetFinalizer(obj interface{}, finalizer interface{})
+
+  runtime.GC()
+
+- thread safe
+  goroutine with GUI (main loop、work loop)
+
+  goroutine with POSIX thread
+
+
+
+* Cgo Next Step: GObject Introspection repository (GIR)
+
+The middleware layer between GObject libraries and language bindings.
+
+It's means when some guy built the first FooObject, then all C libraries which based on GObject
+can be directly used by the Foo Language users.
+
+The first guy in Golang is
+
+.link https://github.com/nsf/gogobject nsf/gogobject 
+
+the first line of _README_
+
+  WARNING! This project is no longer maintained. Probably doesn't even compile.
+
+And it's true. There has an workable and improved version.
+
+.link https://github.com/snyh/gir-generator snyh/gir-generator
+
+
+* pure golang library next step
+
+- xgb
+- go.dbus
+- nodejs-x11
+
+- golang调用C库
+- C代码调用go代码
+- golang编写.so动态库
+
+ udev networkmanager udisk
+
+* golang in DDE 
+
+- all DE component daemons
+
+* Other golang project
+
+- deepin id (online services for linux Desktop)
+- golang for loongson https://github.com/emb-team/loongson-golang
+- many IT infrastructures for internal use
+
+* hack project
+- webkit without javascript runtime 
+- golang play with DOM directly
