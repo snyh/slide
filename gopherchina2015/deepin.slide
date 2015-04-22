@@ -1,11 +1,11 @@
-Go在深度桌面环境中的应用
+Go in Linux Desktop Environment
 
-linux Desktop Environment 开发
 2015年4月
 Tags: golang, deepin, dde, linux
 
-夏彬
+夏彬 
 武汉深之度
+snyh@snyh.org
 
 
 * Linux桌面环境
@@ -73,18 +73,18 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 
 * 解决方式
 
-- using Cgo to get anything
+- using CGO to get anything
 - Pure golang library
 
 
 
-* Cgo Tips 
+* CGO Tips 
 - Go-C 
 - C-Go
 - array
 - struct
 
-* Cgo Tips: Go call C functions && types convert
+* CGO Tips: Go call C functions && types convert
 
 .play cgo.go
 
@@ -92,20 +92,20 @@ Easy to use. Just using the *C* pseudo package.
 
 The code of glue-C is far less than perl、python ...
 
-* Cgo Tips: Even more convenient than C at make time
+* CGO Tips: Even more convenient than C at make time
 
 .play cgo_directive.go
 
 
-* Cgo Tips: Struct is also easy to use
+* CGO Tips: Struct is also easy to use
 
 .play cgo_struct.go
 
-* Cgo Tips: But struct of array is annoying
+* CGO Tips: But struct of array is annoying
 
 .play cgo_array.go
 
-* Cgo Tips: But struct of array is annoying
+* CGO Tips: But struct of array is annoying
 
 convert *****struct_tm* to ***[size]**C.struct_tm*
 
@@ -114,7 +114,7 @@ convert *****struct_tm* to ***[size]**C.struct_tm*
 Why we choose *4* as the *array* *length*
 
 
-* Cgo Tips: But struct of array is annoying
+* CGO Tips: But struct of array is annoying
 
 In practice, the array length must be given at compile time.
 
@@ -132,7 +132,7 @@ The solution?
 
 
 
-* Cgo Problems: We have more troubles
+* CGO Problems: We have more troubles
 
 - GC
   C.free(unsafe.Pointer(foo)) // malloc and free
@@ -151,6 +151,13 @@ ease the pain
   goroutine with POSIX thread
 
 
+* CGO: automatically generate code
+
+.link http://www.swig.org/Doc2.0/Go.html swig
+
+.link https://github.com/sbinet/go-cxxdict go-cxxdict
+
+.link https://github.com/snyh/gir-generator gir-generator
 
 
 
@@ -159,12 +166,11 @@ ease the pain
 
 
 
-
-* Cgo Next Step: GObject Introspection repository (GIR)
+* GIR: GObject Introspection repository (GIR)
 
 The middleware layer between GObject libraries and language bindings.
 
-It's means when some guy built the first FooObject, then all C libraries which based on GObject
+After the first FooObject built, all C libraries which based on GObject
 can be directly used by the Foo Language users.
 
 The first guy in Golang is
@@ -226,28 +232,79 @@ the result is an usable go package.
 
 
 
-* pure golang library next step
+* Pure golang packages: 
 
-- xgb
-- go.dbus
-- nodejs-x11
+X Go Binding
 
-- golang调用C库
-- C代码调用go代码
-- golang编写.so动态库
+.link https://github.com/BurntSushi/xgb  xgb
 
- udev networkmanager udisk
+native Go client bindings for D-Bus message bus system 
 
-* golang in DDE 
+.link https://github.com/guelfey/go.dbus go.dbus
 
-- all DE component daemons
+* What is D-Bus ?
 
-* Other golang project
+- a message bus system. 
+- advanced IPC
+- support Method, Property and Signal
+- support ACL
+- automatically start services
+- supported by GNOME, KDE, Systemd, upstart ... 
+
+[[http://dbus.freedesktop.org][D-Bus FreeDesktop]]
+
+others [[https://github.com/gregkh/kdbus][Kernel "dbus-like" code for the Linux kernel]]
+
+
+* go-dbus: The Easy Frame-less D-Bus Go Interface
+
+[[https://gitcafe.com/Deepin/go-lib/tree/master/dbus][go-dbus]] us go.dbus as transport layer.
+
+- Automatically export Properties/Methods/Signals from Go to D-Bus.
+- Automatically update property value with other system, like GSettings.
+
+
+* go-dbus: example dbus-services, define service
+
+.code dbus.go /type DService/,/}/
+
+[[https://gitcafe.com/Deepin/go-lib/tree/master/dbus][go-dbus]] us go.dbus as transport layer.
+
+* go-dbus: example dbus-services, install service
+
+.code dbus.go /give the dbus/,/^}/
+.play dbus.go /func main/,/^}/
+
+
+
+
+* dbus-generator: Generate D-Bus binding codes 
+
+It can generate dbus-binding for QML/PyQt/Golang.
+
+https://gowalker.org/github.com/linuxdeepin/go-dbus-generator
+
+https://github.com/linuxdeepin/dbus-factory
+
+
+
+
+
+
+* Other Go Project in Deepin
 
 - deepin id (online services for linux Desktop)
-- golang for loongson https://github.com/emb-team/loongson-golang
+- Go for [[https://github.com/emb-team/loongson-golang][loongson]]
 - many IT infrastructures for internal use
 
 * hack project
+
+[[https://github.com/snyh/dui][dui]] 
+
 - webkit without javascript runtime 
 - golang play with DOM directly
+- small memory footprint
+
+* dui: How it look like ?
+
+.play dui.go /hello/,/}\)/
