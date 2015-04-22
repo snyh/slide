@@ -118,19 +118,18 @@ Why we choose *4* as the *array* *length*
 
 In practice, the array length must be given at compile time.
 
-we can simply use a larger one, like 
+we can simply use a larger one and make a slice value, like
 
-    tms := (*[1<<12](*C.struct_tm))(unsafe.Pointer(C.tms))
+    n := calacLength(C.tms)
+    tms := (*[1<<12](*C.struct_tm))(unsafe.Pointer(C.tms))[:n:n]
 
-Sadly, we are torn between "memory save" and "safety".
+Sadly, we are torn between "wasting stack memory" and "safety".
 
-The solution
+The solution?
 
 - cache manager, dynamicly choose different arrays
 - write helper function in C
-- ?
 
-make choice by how many types like this you have to face.
 
 
 * Cgo Problems: We have more troubles
@@ -153,6 +152,14 @@ ease the pain
 
 
 
+
+
+
+
+
+
+
+
 * Cgo Next Step: GObject Introspection repository (GIR)
 
 The middleware layer between GObject libraries and language bindings.
@@ -171,6 +178,52 @@ the first line of _README_
 And it's true. There has an workable and improved version.
 
 .link https://github.com/snyh/gir-generator snyh/gir-generator
+
+
+* GIR: How GIR does this ?
+
+- They has defined a _IDL_ which is worked well with GObject.
+- They offer the libgirepository.so to read the _IDL_ file.
+- Using the information offered by _IDL_ file, you can communicate with any libraries based on GObject.
+
+Bindings type
+- static binding
+- dynamic _binding_
+
+* GIR: How many GIR libraries we can use?
+
+    apt-file search /usr/lib/girepository-1.0/ | awk '{print $1}'  | uniq | wc
+    171     171    3513
+
+- gstreamer
+- appindicator
+- anjuta
+- atspi
+- clutter
+- gudev
+- webkit
+- wnck
+- freedesktop (freetype2、xlib、fontconfig、DBus、xrandr)
+- all libraries based on GObject (use _g-ir-scanner_ to generate the IDL file)
+
+* GIR: use gir udev to inspect device information
+
+.play gudev.go
+
+* GIR: create the new gudev binding in 5 minutes
+
+.code gudev/config.json
+.code gudev/gudev.go.in
+
+and run
+
+   gir-generator gudev.go.in
+
+the result is an usable go package.
+
+
+
+
 
 
 * pure golang library next step
