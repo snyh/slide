@@ -31,7 +31,7 @@ snyh@snyh.org
 - Basic Applications
   Document Reader、Browser、File Manager
   
-* DE是否应该努力追求本身独立?
+* Question: DE是否应该努力追求本身独立?
 
 - 可以跑在更多发行版上
 - 更多的受众，更多的反馈
@@ -48,6 +48,8 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 
   Gnome SDK + sandboxed appliations
   Deepin XX ?
+
+
 
 * Why golang?
 
@@ -69,8 +71,6 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 
 
 
-
-
 * 解决方式
 
 - using CGO to get anything
@@ -81,8 +81,8 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 * CGO Tips 
 - Go-C 
 - C-Go
-- array
 - struct
+- array
 
 * CGO Tips: Go call C functions && types convert
 
@@ -101,11 +101,11 @@ The code of glue-C is far less than perl、python ...
 
 .play cgo_struct.go
 
-* CGO Tips: But struct of array is annoying
+* CGO Tips: Passing array type is annoying
 
 .play cgo_array.go
 
-* CGO Tips: But struct of array is annoying
+* CGO Tips: Passing array type is annoying
 
 convert *****struct_tm* to ***[size]**C.struct_tm*
 
@@ -114,7 +114,7 @@ convert *****struct_tm* to ***[size]**C.struct_tm*
 Why we choose *4* as the *array* *length*
 
 
-* CGO Tips: But struct of array is annoying
+* CGO Tips: Passing array type is annoying
 
 In practice, the array length must be given at compile time.
 
@@ -275,6 +275,12 @@ others [[https://github.com/gregkh/kdbus][Kernel "dbus-like" code for the Linux 
 .code dbus.go /give the dbus/,/^}/
 .play dbus.go /func main/,/^}/
 
+* go-dbus: defect
+
+- type of struct
+- lost argument name
+  Go's reflect doesn't support query arguments name of a function at runtime.
+  Should We using *go generate* to generate statically stub code ?
 
 
 
