@@ -1,7 +1,7 @@
 Go in Linux Desktop Environment
 
 2015年4月
-Tags: golang, deepin, dde, linux
+Tags: golang, deepin, DE, linux
 
 夏彬 
 武汉深之度
@@ -31,11 +31,20 @@ snyh@snyh.org
 - Basic Applications
   Document Reader、Browser、File Manager
   
+
+* Why golang?
+
+- 简洁一致
+- 开发效率与运行效率间的平衡
+- 编译型语言相对来说更适合长期项目
+
+
 * Question: DE是否应该努力追求本身独立?
 
 - 可以跑在更多发行版上
 - 更多的受众，更多的反馈
-- 但DE必定与底层服务甚至特定版，这条路很难走到完美。
+
+- 但DE最终会与底层服务甚至特定版进行交互，完全独立很难走到完美。
 - 造成更多的开发包袱
 
 Linux不会被统一,所以DE最好还是拥有更好的内聚性。
@@ -48,18 +57,6 @@ Linux不会被统一,所以DE最好还是拥有更好的内聚性。
 
   Gnome SDK + sandboxed appliations
   Deepin XX ?
-
-
-
-* Why golang?
-
-- 简洁一致
-- 开发效率与运行效率间的平衡
-- 编译型语言相对来说更适合长期项目
-
-
-
-
 
 
 
@@ -123,12 +120,6 @@ we can simply use a larger one and make a slice value, like
     n := calacLength(C.tms)
     tms := (*[1<<12](*C.struct_tm))(unsafe.Pointer(C.tms))[:n:n]
 
-Sadly, we are torn between "wasting stack memory" and "safety".
-
-The solution?
-
-- cache manager, dynamicly choose different arrays
-- write helper function in C
 
 
 
@@ -277,11 +268,11 @@ others [[https://github.com/gregkh/kdbus][Kernel "dbus-like" code for the Linux 
 
 * go-dbus: defect
 
-- type of struct
-- lost argument name
-  Go's reflect doesn't support query arguments name of a function at runtime.
-  Should We using *go generate* to generate statically stub code ?
-
+- lost struct filed name (D-Bus caused)
+- lost argument name (go-dbus caused)
+  reflect package doesn't support query arguments name of a function at runtime.
+  
+Should we using _go_ _generate_ to generate stub code at build time ?
 
 
 * dbus-generator: Generate D-Bus binding codes 
@@ -291,9 +282,6 @@ It can generate dbus-binding for QML/PyQt/Golang.
 https://gowalker.org/github.com/linuxdeepin/go-dbus-generator
 
 https://github.com/linuxdeepin/dbus-factory
-
-
-
 
 
 
@@ -314,3 +302,16 @@ https://github.com/linuxdeepin/dbus-factory
 * dui: How it look like ?
 
 .play dui.go /hello/,/}\)/
+
+
+* 湖北的同学们可以回家啦
+
+*Go* to *武汉*
+
+
+Deepin 武汉光谷金融港
+
+http://deepin.org
+
+
+[[https://github.com/snyh/slide/tree/master/gopherchina2015][Slide源码]]

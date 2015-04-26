@@ -17,5 +17,5 @@ import "fmt"
 
 func main() {
 	C.init_array_times()
-	fmt.Println("Tody is", C.tms[1].tm_year+1900, C.tms[1].tm_mon+1, C.tms[1].tm_mday+1)
+	fmt.Println("Tody is", C.tms[1].tm_year, C.tms[1].tm_mon+1, C.tms[1].tm_mday+1)
 }
