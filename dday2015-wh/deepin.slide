@@ -1,0 +1,122 @@
+X11简介 - 上古GUI编程入门
+
+2015年6月
+Tags: X11, GUI, linux
+
+夏彬 
+武汉深之度
+snyh@snyh.org
+
+
+* X Window System
+
+X最早由MIT在1984年发布.
+
+X协议的当前版本X11发布于1987.
+
+.image logo.png
+
+* 什么是GUI环境 
+
+1. 在显示设备上绘制和移动窗口
+2. 通过鼠标、键盘或触摸屏来和窗口进行交互。
+
+
+* 用户眼中的窗口
+.image window.png
+
+* 程序员眼中的窗口(X Window)
+- 树形结构
+- 窗口信息(本身): Geometry, Map State等
+- 窗口属性(附加): _NET_WM_ALLOWED_ACTIONS、_NET_WM_WINDOW_TYPE、WM_CLIENT_LEADER、_NET_WM_NAME、_NET_WM_PID等
+- 窗口显示的内容(二进制数据): 大部分猿类还没有进化到可以直接感知其数据=最不重要的信息
+.image programmer.jpg _ 500 
+
+* 应用选择器(alt+tab)
+.html player.html
+
+* 应用选择器(alt+tab)的关键技术点
+- 如何获得需要显示的窗口列表?
+- 如何获得每个窗口的内容?
+- 如何激活选定的窗口?
+
+
+* 预备知识
+- X的通讯方式: Server & Client
+- X窗口
+- Extended Window Manager Hints (EWMH)
+- Inter-Client Communication Conventions Manual (ICCCM)
+
+
+
+* X窗口
+- root window and client windows
+- toplevel window 
+- man xwininfo 获取窗口信息
+- man xprop 获取窗口属性
+
+* 示例:检测root窗口属性 xprop -root
+.image xprop_root.png
+
+
+* EWMH与窗口管理器(WM)
+
+- EWMH定义了WM和应用程序(toplevel window)之间沟通的"属性" _NET_WM_XX
+- ICCCM定义了应用程序窗口之间沟通的"属性" _NET_XX
+- WM以RootWindow为介质与应用程序窗口进行沟通
+  应用窗口---(发送事件)--->RootWindow<----(监听RootWindow的事件并处理)------WM
+
+
+* 获得需要显示的窗口列表
+
+- 顶层窗口(top-level windows)
+- 自愿出现在选择器中的窗口
+  哪些窗口不愿意/不适合出现在选择器中?
+
+* 获得需要显示的窗口列表
+
+- 顶层窗口(top-level windows)
+- 不愿出现的窗口类型
+  气泡提示
+  询问类的对话框
+  系统级别程序，启动器、控制栏等
+
+- GetProperty request
+
+- _NET_CLIENT_LIST on RootWindow
+- _NET_WM_STATE_SKIP_TASKBAR on toplevel window
+
+
+* 获得每个窗口的内容
+- 获得窗口尺寸
+  GetGeometry request
+
+- 获得窗口内容
+  GetImage request
+
+- 窗口内容被修改时的通知
+  PropertyNotify event(_NET_CLIENT_LIST on RootWindow)
+  Expose event (实际上现在都是使用damage扩展来获取的)
+
+* 激活选定的窗口
+SendEvent request
+
+ClientMessage event
+_NET_ACTIVE_WINDOW
+
+- _NET_ACTIVE_WINDOW on RootWindow
+
+
+
+* Hack X
+- android-xserver(XSDL): 一秒给Linux系统增加一个触摸屏
+- WeirdX: java版的XServer，run anywhere
+- node-x11: 纯js代码实现native的GUI编程
+- x11-utils: 通过数据探索X的一点一点
+- wireshark: X请求的每一个字节都不放过
+
+
+* 参考链接
+- X11协议　http://www.x.org/releases/X11R7.7/doc/xproto/x11protocol.html
+- X11扩展　http://www.x.org/releases/current/doc/index.html#protocol
+- EWMH手册 http://standards.freedesktop.org/wm-spec/wm-spec-latest.html
